@@ -38,6 +38,9 @@ try:
 
     print("PASS: Master-password prompt displayed.")
 
+    driver.save_screenshot("TC03_Master_Password_Prompt.png")
+    print("Screenshot saved: TC03_Master_Password_Prompt.png")
+
     master_password_field.send_keys(MASTER_PASSWORD)
 
     verify_button = wait.until(
@@ -47,10 +50,28 @@ try:
     )
     verify_button.click()
 
+    wait.until(
+        lambda d: d.execute_script(
+            "return document.readyState"
+        ) == "complete"
+    )
+
     print("Current URL:", driver.current_url)
     print("Page title:", driver.title)
 
+    driver.save_screenshot("TC03_Master_Password_Verification.png")
+    print("Screenshot saved: TC03_Master_Password_Verification.png")
+
     input("Inspect the result, then press ENTER to close...")
+
+except Exception as error:
+    print("TEST ERROR:", type(error).__name__, error)
+    print("Current URL:", driver.current_url)
+
+    driver.save_screenshot("TC03_Master_Password_Error.png")
+    print("Error screenshot saved: TC03_Master_Password_Error.png")
+
+    input("Inspect the browser, then press ENTER to close...")
 
 finally:
     driver.quit()
